@@ -7,8 +7,6 @@ import Expense from './Screens/Expense';
 import Notes from './Screens/Notes';
 import Wallet from './Screens/Wallet';
 
-
-
 const Stack = createStackNavigator()
 
 export default function App() {
