@@ -6,6 +6,7 @@ import Borrow from './Screens/Borrow';
 import Expense from './Screens/Expense';
 import Notes from './Screens/Notes';
 import Wallet from './Screens/Wallet';
+import BorrowAdd from './Screens/BorrowAdd';
 
 const Stack = createStackNavigator()
 
@@ -18,6 +19,7 @@ export default function App() {
          <Stack.Screen name='Expense' component={Expense}/>
          <Stack.Screen name='Wallet' component={Wallet}/>
          <Stack.Screen name='Notes' component={Notes}/>
+         <Stack.Screen name='BorrowAdd' component={BorrowAdd} />
       </Stack.Navigator>
     </NavigationContainer>
   );

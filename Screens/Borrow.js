@@ -60,7 +60,6 @@ function Borrow(){
             </View>
             <ScrollView>
                 <View style={styles.cards}>
-                    <Card name='sample' price='700'/>
                     {
                         display.map((people,index) => (
                             <Card key={index} name={people.name} price={people.money}/>
