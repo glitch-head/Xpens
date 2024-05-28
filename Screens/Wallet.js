@@ -55,7 +55,7 @@ function Wallet(){
                     <View style={styles.textOnly} >
                         <Text>Expense: ${amount}</Text>
                     </View>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => {navigation.navigate('Add Expense')}} >
                         <View style={styles.featAdd} >
                             <Text>+</Text>
                         </View>
@@ -65,7 +65,7 @@ function Wallet(){
                     <View style={styles.textOnly} >
                         <Text>Savings: ${amount}</Text>
                     </View>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => {navigation.navigate('Add Savings')}} >
                         <View style={styles.featAdd} >
                             <Text>+</Text>
                         </View>

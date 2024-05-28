@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#EB5E28',
         flex: 1,
         padding:20,
-        gap: 20
+        gap: 20,
+        alignItems: 'center'
     },
     top:{
       flexDirection:'row',
