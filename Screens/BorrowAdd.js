@@ -38,7 +38,7 @@ const BorrowAdd = () => {
 
             <View style={styles.ReasonCard} >
                 <Text style={styles.Text} > Reason: </Text>
-                <TextInput style={styles.ReasonInputArea} placeholder=''/>
+                <TextInput multiline={true} style={styles.ReasonInputArea} placeholder=''/>
             </View>
             
             <TouchableOpacity>

@@ -3,6 +3,7 @@ import dollars from '../assets/dollars.png'
 import smartphone from '../assets/smartphone.png'
 import { useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import AddAmount from "../components/AddAmount";
 
 
 function Wallet(){
@@ -15,7 +16,7 @@ function Wallet(){
 
     return(
         <View style={styles.container}>
-            <View style={styles.walletCard}>
+            {/* <View style={styles.walletCard}>
                 <View style={styles.topCard} >
                     <TouchableOpacity onPress={() => {showAmount == upi? setShowAmount(amount): setShowAmount(upi)}}>
                         <View style={styles.cardBtn} >
@@ -39,7 +40,10 @@ function Wallet(){
                     <Text style={{color:'#ffffff',fontSize: 25 }}> Total Amount: </Text>
                     <Text style={{color:'#ffffff',fontSize: 45 }}> {showAmount} </Text>
                 </View>
-            </View>
+            </View> */}
+
+            <AddAmount/>
+
             <View style={styles.features} >
                 <View style={styles.featCard} >
                     <View style={styles.textOnly} >
