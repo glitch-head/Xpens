@@ -9,8 +9,6 @@ const AddAmount = (props) => {
 
     const [medium, setMedium] = useState('upi')
 
-    let select = false
-
     const handleMedium = (val) => {
         console.log(val)
         setMedium(val)
@@ -18,7 +16,7 @@ const AddAmount = (props) => {
 
     return (
         <View>
-            <View style={styles.walletCard}>
+            <View style={styles.walletCardleft}>
                 <View style={styles.topCard} >
                     <TouchableOpacity onPress={() => handleMedium('upi')}>
                         <View style={styles.cardBtn}>
@@ -32,11 +30,7 @@ const AddAmount = (props) => {
                             <Text>Cash</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View style={styles.add} >
-                            <Text>X</Text>
-                        </View>
-                    </TouchableOpacity>
+                    
                 </View>
                 <View style={styles.bottomCard} >
                     <Text style={{color:'#ffffff',fontSize: 25 }}> Amount: </Text>
@@ -50,11 +44,10 @@ const AddAmount = (props) => {
 }
 
 const styles = StyleSheet.create({
-    walletCard: {
+    walletCardleft: {
         backgroundColor: '#000000',
-        width: 350,
+        width: 240,
         height: 250,
-        marginTop: 20,
         borderRadius: 25,
         padding: 25,
 
@@ -88,10 +81,10 @@ const styles = StyleSheet.create({
     bottomCard:{
         marginTop: 35,
         gap: 7,
-        marginLeft: 20
+        marginLeft: 10
     },
     AmountInputArea:{
-        width: 240,
+        width: 230,
         height: 40,
         paddingHorizontal: 10,
         paddingVertical: 10,
