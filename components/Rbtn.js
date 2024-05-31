@@ -9,7 +9,6 @@ const Rbtn = (props) => {
   return (
     <View>
       <View style={{height:props.h, width:props.w , flexDirection: 'row',justifyContent: 'space-evenly'}} >
-        {/* <Text style={styles.Text}>Payment: </Text> */}
         {props.items.map((item) => (
           <View key={item} style={styles.btnText}>
             <Text style={styles.Text}>{item}</Text>
@@ -27,6 +26,8 @@ const Rbtn = (props) => {
     </View>
   );
 };
+
+export default Rbtn;
 
 const styles = StyleSheet.create({
     SelectCard:{
@@ -69,4 +70,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Rbtn;
+

@@ -61,13 +61,13 @@ function Borrow() {
         </View>
       </View>
       <ScrollView>
-       <View style={styles.cards} ></View>
+        <View style={styles.cards}></View>
         <View>
-           {display.map((people, index) => (
+          {display.map((people, index) => (
             <Card key={index} name={people.name} price={people.money} />
-           ))}
-         </View>
-        <View style={styles.cards} ></View>
+          ))}
+        </View>
+        <View style={styles.cards}></View>
       </ScrollView>
     </View>
   );
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 20,
-    width: 395
+    width: 395,
   },
   cards: {
     height: 20,
