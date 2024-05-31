@@ -13,7 +13,10 @@ const AddExpense = () => {
         <View style={styles.container} >
             <View style={styles.ReasonCard} >
                 <Text style={styles.Text} > Expense: </Text>
-                <TextInput multiline={true} style={styles.ReasonInputArea} placeholder=''/>
+                <TextInput 
+                    multiline={true} 
+                    style={styles.ReasonInputArea} placeholder=''
+                />
             </View>
             <View style={styles.SelectCard}>
                 <Text style={styles.Text}>Payment: </Text>

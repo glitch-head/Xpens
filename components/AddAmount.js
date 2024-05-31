@@ -33,7 +33,7 @@ const AddAmount = (props) => {
                     
                 </View>
                 <View style={styles.bottomCard} >
-                    <Text style={{color:'#ffffff',fontSize: 25 }}> Amount: </Text>
+                    <Text style={{color:'#ffffff',fontSize: 25 }}> Amount ({medium}):</Text>
                     <TextInput style={styles.AmountInputArea} />
 
                     {/* <Text style={{color:'#ffffff',fontSize: 45 }}> {props.showAmount} </Text> */}
