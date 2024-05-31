@@ -25,7 +25,9 @@ function Expense(){
                 <View>
                 {
                     Expenses.map(exp => (
-                        <ExpenseCard expense={exp.expense} money={exp.money} date={exp.date} />
+                        <View key={exp}>
+                            <ExpenseCard expense={exp.expense} money={exp.money} date={exp.date}/>
+                        </View>
                     ))
                 }
                 </View>
