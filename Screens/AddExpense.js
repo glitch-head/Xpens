@@ -41,6 +41,9 @@ const AddExpense = () => {
                 <Text style={styles.Text} > Amount: </Text>
                 <TextInput style={styles.AmountInputArea} />
             </View>
+            <View style={styles.DateCard} >
+                    <Text style={styles.Text} > Date </Text>
+            </View>
             <TouchableOpacity>
                 <View style={styles.AddCard} >
                     <Text style={styles.AddText} >  Add </Text>
@@ -99,6 +102,16 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     AddCard:{
+        height: 100,
+        width: 350,
+        backgroundColor: '#000000',
+        borderRadius: 20,
+        flexDirection: 'row',
+        alignItems:'center',
+        justifyContent: 'center',
+        marginTop: 20,
+    },
+    DateCard:{
         height: 100,
         width: 350,
         backgroundColor: '#000000',
