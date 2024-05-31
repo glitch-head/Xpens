@@ -5,6 +5,8 @@ import { useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AddAmount from "../components/AddAmount";
 import Amount from "../components/Amount";
+import noteIcon from '../assets/sticky-notes.png'
+
 
 function Wallet() {
     const navigation = useNavigation();
@@ -32,9 +34,12 @@ function Wallet() {
 
         <View style={styles.features}>
             <View style={styles.featCard}>
-            <View style={styles.textOnly}>
-                <Text>Borrow: ${amount}</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Borrow')} >
+            <View style={styles.textWrap}>
+                <Text style={styles.titleText} >Borrow: </Text>
+                <Text>${amount}</Text>
             </View>
+                </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => {
                 navigation.navigate("BorrowAdd");
@@ -46,9 +51,12 @@ function Wallet() {
             </TouchableOpacity>
             </View>
             <View style={styles.featCard}>
-            <View style={styles.textOnly}>
-                <Text>Expense: ${amount}</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Expense')} >
+            <View style={styles.textWrap}>
+                <Text style={styles.titleText} >Expense: </Text>
+                <Text>${amount}</Text>
             </View>
+                </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => {
                 navigation.navigate("Add Expense");
@@ -60,17 +68,16 @@ function Wallet() {
             </TouchableOpacity>
             </View>
             <View style={styles.featCard}>
-            <View style={styles.textOnly}>
-                <Text>Savings: ${amount}</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Add Savings')} >
+            <View style={styles.textWrap}>
+                <Text style={styles.titleText} >Savings: </Text>
+                <Text>${amount}</Text>
             </View>
-            <TouchableOpacity
-                onPress={() => {
-                navigation.navigate("Add Savings");
-                }}
-            >
-                <View style={styles.featAdd}>
-                <Text>+</Text>
-                </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Notes')} style={styles.noteBtn} >
+                <View style={styles.notes}>
+                    <Image source={noteIcon} style={{height: 64, width: 64}} />   
+                </View> 
             </TouchableOpacity>
             </View>
         </View>
@@ -132,7 +139,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         padding: 20,
-        paddingHorizontal: 35,
+        paddingHorizontal: 20,
     },
     features: {
         gap: 20,
@@ -147,4 +154,24 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         marginStart: 15,
     },
+    textWrap:{
+        // backgroundColor: '#0000f0',
+        height:70,
+        width: 170,
+        padding: 10,
+        borderRadius:10,
+        borderWidth:1
+    },
+    titleText:{
+        fontSize:22
+    },
+    noteBtn:{
+        // backgroundColor:'#0000f0',
+        borderWidth:1,
+        width: 80,
+        height: 70,
+        borderRadius:10,
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
 });
