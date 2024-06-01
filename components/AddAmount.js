@@ -34,8 +34,14 @@ const AddAmount = (props) => {
                 </View>
                 <View style={styles.bottomCard} >
                     <Text style={{color:'#ffffff',fontSize: 25 }}> Amount ({medium}):</Text>
+                    <View style={{flexDirection: 'row', gap: 20}} >
                     <TextInput style={styles.AmountInputArea} />
-
+                        <TouchableOpacity>
+                    <View style={styles.Addamount}>
+                        <Text style={{color:'#fff' , fontSize: 20 }} >ADD</Text>
+                    </View>
+                        </TouchableOpacity>
+                    </View>
                     {/* <Text style={{color:'#ffffff',fontSize: 45 }}> {props.showAmount} </Text> */}
                 </View>
             </View>
@@ -84,7 +90,7 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     AmountInputArea:{
-        width: 230,
+        width: 150,
         height: 40,
         paddingHorizontal: 10,
         paddingVertical: 10,
@@ -93,6 +99,15 @@ const styles = StyleSheet.create({
         color: '#fff',
         marginLeft: 10
     },
+    Addamount:{
+        width: 120,
+        height: 43,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 1,
+        borderColor: '#fff',
+        borderRadius: 10
+    }
 })
 
 export default AddAmount;

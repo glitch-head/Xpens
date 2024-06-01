@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import AddAmount from "../components/AddAmount";
 import Amount from "../components/Amount";
 import noteIcon from "../assets/sticky-notes.png";
+import addIcon from '../assets/add.png'
 
 function Wallet() {
   const navigation = useNavigation();
@@ -24,11 +25,11 @@ function Wallet() {
       <View style={styles.walletCard}>
         {wallet === "Amount" ? <Amount /> : <AddAmount />}
         {/* <AddAmount/> */}
-        <TouchableOpacity style={{ paddingTop: 25 }} onPress={handleWallet}>
           <View style={styles.add}>
-            <Text>+</Text>
-          </View>
+        <TouchableOpacity onPress={handleWallet}>
+            <Image source={addIcon} style={{height:64, width:64}} />
         </TouchableOpacity>
+          </View>
       </View>
 
       <View style={styles.features}>
@@ -125,7 +126,9 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginStart: 15,
+    marginTop: 25,
+    marginLeft: 20
+
   },
   bottomCard: {
     marginTop: 35,
