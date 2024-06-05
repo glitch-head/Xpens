@@ -11,22 +11,29 @@ import { useSQLiteContext } from "expo-sqlite/next";
 function Wallet() {
   const navigation = useNavigation();
   const db = useSQLiteContext();
+  const [walletTb,setWalletTb] = useState([]);
+
+  async function getData(){
+    const result = await db.getAllAsync('SELECT * FROM WalletTB')
+    console.log(result)
+    setWalletTb(result)
+  }
+
+  let upi = 0,cash = 0;
+  
+  for(let i=0 ; i<walletTb.length; i++){
+    if(walletTb[i].UPI) upi += walletTb[i].Amount;
+    else cash += walletTb[i].Amount
+  }
+  let amount = upi + cash;
+
+  const [wallet, setWallet] = useState("Amount");
 
   useEffect( () => {
     db.withTransactionAsync( async() => {
       await getData()
     })
   },[db] )
-
-  async function getData(){
-    const result = await db.getAllAsync('SELECT * FROM WalletTB')
-    console.log(result)
-  }
-
-  let upi = 7000,
-    cash = 5000;
-  let amount = upi + cash;
-  const [wallet, setWallet] = useState("Amount");
 
   const handleWallet = () => {
     setWallet(wallet === "Amount" ? "AddAmount" : "Amount");
@@ -35,8 +42,7 @@ function Wallet() {
   return (
     <View style={styles.container}>
       <View style={styles.walletCard}>
-        {wallet === "Amount" ? <Amount /> : <AddAmount />}
-        {/* <AddAmount/> */}
+        {wallet === "Amount" ? <Amount upi={upi} cash={cash} /> : <AddAmount />}
           <View style={styles.add}>
         <TouchableOpacity onPress={handleWallet}>
             <Image source={addIcon} style={{height:64, width:64}} />

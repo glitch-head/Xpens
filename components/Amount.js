@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
 import dollars from "../assets/dollars.png";
 import smartphone from "../assets/smartphone.png";
@@ -6,10 +6,14 @@ import { useState } from "react";
 
 const Amount = (props) => {
 
-    let upi = 7000, cash = 5000
+    let upi = props.upi, cash = props.cash
     let amount = upi + cash
     const [showAmount, setShowAmount] = useState(amount)
 
+    useEffect(()=> {
+      setShowAmount(amount)
+    },[cash,upi])
+    
     return (
         <View>
         <View style={styles.walletCardleft}>
