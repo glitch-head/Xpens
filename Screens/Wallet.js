@@ -1,15 +1,27 @@
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
-import dollars from "../assets/dollars.png";
-import smartphone from "../assets/smartphone.png";
-import { useContext, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AddAmount from "../components/AddAmount";
 import Amount from "../components/Amount";
 import noteIcon from "../assets/sticky-notes.png";
 import addIcon from '../assets/add.png'
+import { useSQLiteContext } from "expo-sqlite/next";
+
 
 function Wallet() {
   const navigation = useNavigation();
+  const db = useSQLiteContext();
+
+  useEffect( () => {
+    db.withTransactionAsync( async() => {
+      await getData()
+    })
+  },[db] )
+
+  async function getData(){
+    const result = await db.getAllAsync('SELECT * FROM WalletTB')
+    console.log(result)
+  }
 
   let upi = 7000,
     cash = 5000;
