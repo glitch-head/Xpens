@@ -1,18 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { TextInput } from 'react-native';
 import dollars from '../assets/dollars.png'
 import smartphone from '../assets/smartphone.png'
 import { useState } from 'react';
+import { useSQLiteContext } from 'expo-sqlite';
 
 const AddAmount = (props) => {
 
+    const db = useSQLiteContext()
     const [medium, setMedium] = useState('upi')
+    const [upi,setUpi] = useState(true)
 
     const handleMedium = (val) => {
         console.log(val)
         setMedium(val)
+        setUpi( val === 'upi' ? true : false )
     }
+    const [value,setValue] = useState()
+    const [change,setChange] = useState(0)
+
+    const addData = async(id) => {
+        db.withTransactionAsync( async() => {
+            await db.runAsync('INSERT DATA INTO WalletTB (ID, UPI , Amount) values (?,?,?);',
+            [id, upi, value]             
+        ) } )
+    }
+
+    const addValue = () => {
+        console.log(`value inserted $${value}`)
+        addData()
+        setChange( change? 0 : 1 )
+    }
+    useEffect(()=>{
+        setValue()
+    },[change])
 
     return (
         <View>
@@ -35,8 +57,8 @@ const AddAmount = (props) => {
                 <View style={styles.bottomCard} >
                     <Text style={{color:'#ffffff',fontSize: 25 }}> Amount ({medium}):</Text>
                     <View style={{flexDirection: 'row', gap: 20}} >
-                    <TextInput style={styles.AmountInputArea} />
-                        <TouchableOpacity>
+                    <TextInput style={styles.AmountInputArea} value={value} onChangeText={setValue} inputMode='numeric'/>
+                        <TouchableOpacity onPress={addValue}>
                     <View style={styles.Addamount}>
                         <Text style={{color:'#fff' , fontSize: 20 }} >ADD</Text>
                     </View>

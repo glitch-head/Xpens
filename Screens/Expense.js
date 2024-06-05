@@ -1,19 +1,25 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import ExpenseCard from "../components/ExpenseCard";
+import { useSQLiteContext } from "expo-sqlite";
+import { useEffect, useState } from "react";
+
 
 function Expense(){
 
-    const Expenses = [
-        { expense: "Hershe chocolate", money: 400,  date:'02-JAN-2021' },
-        { expense: "Supply registration", money: 210, date:'12-OCT-2023' },
-        { expense: "T-Shirt", money: 600,  date:'12-NOV-2023' },
-        { expense: "Necklace", money: 400,    date:'26-FEB-2024' },
-        { expense: "Hershe chocolate", money: 400,  date:'02-JAN-2021' },
-        { expense: "Supply registration", money: 210, date:'12-OCT-2023' },
-        { expense: "T-Shirt", money: 600,  date:'12-NOV-2023' },
-        { expense: "Necklace", money: 400,    date:'26-FEB-2024' },
-      ];
+    const db = useSQLiteContext()
+    const [expenses,setExpenses] = useState([])
+
+    async function getData(){
+        const result = await db.getAllAsync(
+            'SELECT * FROM ExpenseTB;'
+        )
+        setExpenses(result)
+        console.log(`Expense : ${result}`)
+    }
+    useEffect( () => {
+        getData()
+    },[db] )
 
     return(
         <View style={styles.container} >
@@ -24,9 +30,9 @@ function Expense(){
                 <View style={{height: 20}} />
                 <View>
                 {
-                    Expenses.map(exp => (
-                        <View key={exp}>
-                            <ExpenseCard expense={exp.expense} money={exp.money} date={exp.date}/>
+                    expenses.map(exp => (
+                        <View key={exp.ID}>
+                            <ExpenseCard expense={exp.Reason} money={exp.Amount} date={exp.Date}/>
                         </View>
                     ))
                 }

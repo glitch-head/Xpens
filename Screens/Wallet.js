@@ -15,7 +15,7 @@ function Wallet() {
 
   async function getData(){
     const result = await db.getAllAsync('SELECT * FROM WalletTB')
-    console.log(result)
+    // console.log(result)
     setWalletTb(result)
   }
 
@@ -114,12 +114,12 @@ const styles = StyleSheet.create({
     height: 250,
     marginTop: 20,
     borderRadius: 25,
-    // padding: 25,
     flexDirection: "row",
+    // shadowColor: '#000',
+    // shadowRadius: 8,
+    // shadowOffset: {height: 8, width: 2},
+    // shadowOpacity: 0.15,
   },
-  // walletCardright:{
-  //     paddingTop: 25
-  // },
   container: {
     alignItems: "center",
     flex: 1,
