@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import ExpenseCard from "../components/ExpenseCard";
-import { useSQLiteContext } from "expo-sqlite";
+import { useSQLiteContext } from "expo-sqlite/next";
 import { useEffect, useState } from "react";
 
 
@@ -15,10 +15,12 @@ function Expense(){
             'SELECT * FROM ExpenseTB;'
         )
         setExpenses(result)
-        console.log(`Expense : ${result}`)
+        console.log(`Expense : ${expenses}`)
     }
     useEffect( () => {
-        getData()
+        db.withTransactionAsync( async() => {
+            await getData()
+        } )
     },[db] )
 
     return(

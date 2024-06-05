@@ -4,11 +4,16 @@ function Card(props){
 
     const price = props.price
     const name = props.name
+    const borrow = props.borrow
+    const reason = props.reason
 
     return(
         <View style
         ={styles.card}>
-            <Text style={{ fontSize: 20}}>{name} borrowed: </Text>
+            <View>
+            <Text style={{ fontSize: 22}}>{borrow? 'From ': 'To '} {name} </Text>
+            <Text>{reason}</Text>
+            </View>
             <Text style={{ fontSize: 25}}>{price}$</Text>
         </View>
     )

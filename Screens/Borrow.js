@@ -1,21 +1,39 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import Card from "../components/Card";
 import { ScrollView } from "react-native-gesture-handler";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSQLiteContext } from "expo-sqlite/next";
 
 function Borrow() {
-  const all = [
-    { name: "sreebi", money: 700, toMe: true },
-    { name: "muhsin", money: 2500, toMe: false },
-    { name: "jasim", money: 1000, toMe: false },
-    { name: "abhi", money: 200, toMe: true },
-    { name: "sreebi", money: 700, toMe: true },
-    { name: "muhsin", money: 2500, toMe: false },
-    { name: "jasim", money: 1000, toMe: false },
-    { name: "abhi", money: 200, toMe: true },
-  ];
-  const toGive = all.filter((people, _) => !people.toMe);
-  const toGet = all.filter((people, _) => people.toMe);
+
+  const db = useSQLiteContext()
+  const [all,setAll] = useState([{ Name: "sreebi", Amount: 210,  toGive: false, Reason: 'Supply Registration'  }])
+
+  async function getData() {
+    const result = db.getAllAsync('SELECT * FROM BorrowTB;')
+    setAll({...a, result})
+    console.log(`Borrow: ${all}`)
+  }
+
+  useEffect( () => {
+    db.withTransactionAsync(async() => {
+      await getData()
+    })
+  },[db] )
+
+  // const all = [
+  //   { name: "sreebi", money: 700,  toMe: true  },
+  //   { name: "muhsin", money: 2500, toMe: false },
+  //   { name: "jasim",  money: 1000, toMe: false },
+  //   { name: "abhi",   money: 200,  toMe: true  },
+  //   { name: "sreebi", money: 700,  toMe: true  },
+  //   { name: "muhsin", money: 2500, toMe: false },
+  //   { name: "jasim",  money: 1000, toMe: false },
+  //   { name: "abhi",   money: 200,  toMe: true  },
+  // ];
+
+  const toGive = all.filter((br) => br.toGive);
+  const toGet  = all.filter((br) => !br.toGive);
 
   const [toggle, setToggle] = useState("All");
   const [display, setDisplay] = useState(all);
@@ -30,10 +48,10 @@ function Borrow() {
   let totalGive = 0;
   let totalGet = 0;
   all.forEach((element) => {
-    if (!element.toMe) {
-      totalGive += element.money;
+    if (element.toGive) {
+      totalGive += element.Amount;
     } else {
-      totalGet += element.money;
+      totalGet += element.Amount;
     }
   });
 
@@ -63,8 +81,8 @@ function Borrow() {
       <ScrollView>
         <View style={styles.cards}></View>
         <View>
-          {display.map((people, index) => (
-            <Card key={index} name={people.name} price={people.money} />
+          {display.map(br => (
+            <Card key={br.ID} name={br.Name} price={br.Amount} borrow={br.toGive} reason={br.Reason} />
           ))}
         </View>
         <View style={styles.cards}></View>
