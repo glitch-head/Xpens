@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import Rbtn from '../components/Rbtn';
 import { SelectList } from 'react-native-dropdown-select-list'
+import { useSQLiteContext } from 'expo-sqlite';
+
+
 
 const Months = [
     {key:'1', value:'JAN'}, {key:'2', value:'FEB'},
@@ -15,30 +18,40 @@ const Months = [
 
 const AddExpense = () => {
 
+    const db = useSQLiteContext()
+
     const types = ['upi','cash']
     const [pay,setPay] = useState('')
     const [month, setMonth] = useState("");
     const [day,setDay] = useState()
     const [year,setYear] = useState()
-    const [date,setDate] = useState('')
     const [amount,setAmount] = useState()
-    const [exp,setExp] = useState()
+    const [exp,setExp] = useState('')
+    const [change,setChange] = useState(0)
 
-    const addData = () => {
+    const addData = async() => {
+        
         const dt = `${day}-${month}-${year}`
-        setDate(dt)
-        console.log('------NEW DATA-----')
-        console.log(`expense: ${exp}`)
-        console.log(`payment: ${pay}`)
-        console.log('date: '+date)
-        console.log(`Amount: ${amount}`)
-        setDate()
+        const cash = pay === 'cash'
+
+        db.withTransactionAsync(async()=>{
+
+            await db.runAsync(
+                'INSERT INTO ExpenseTB (Cash, Amount, Date, Reason) VALUES (?,?,?,?);',
+                [cash,amount,dt,exp]
+            )
+        })
+        setChange(!change)
+    }
+
+    useEffect(()=> {
         setDay()
         setMonth()
         setYear()
         setAmount()
         setExp()
-    }
+        setPay()
+    },[change])
 
     return (
         <View style={styles.container} >
@@ -50,7 +63,6 @@ const AddExpense = () => {
                     onChangeText={setExp} value={exp}
                 />
             </View>
-            
            
             <View style={styles.DateCard} >
                     <Text style={styles.Text} > Date: </Text>
@@ -71,9 +83,7 @@ const AddExpense = () => {
                         closeicon={<Text></Text>}
                     />
                     <TextInput style={styles.year} placeholder='Year'
-                        value={year} onChangeText={(e)=>{setYear(e)
-                            console.log(year)
-                        }} inputMode='numeric'
+                        value={year} onChangeText={setYear} inputMode='numeric'
                     />
             </View>
             <View style={styles.AmountCard} >
