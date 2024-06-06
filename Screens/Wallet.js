@@ -33,7 +33,8 @@ function Wallet() {
     db.withTransactionAsync( async() => {
       await getData()
     })
-  },[db] )
+  },[db, wallet])
+  console.log('updated')
 
   const handleWallet = () => {
     setWallet(wallet === "Amount" ? "AddAmount" : "Amount");

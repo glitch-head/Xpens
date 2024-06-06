@@ -8,11 +8,13 @@ function Borrow() {
 
   const db = useSQLiteContext()
   const [all,setAll] = useState([{ Name: "sreebi", Amount: 210,  toGive: false, Reason: 'Supply Registration'  }])
+  const [toggle, setToggle] = useState("All");
+  const [display, setDisplay] = useState(all);
 
   async function getData() {
-    const result = db.getAllAsync('SELECT * FROM BorrowTB;')
-    setAll({...a, result})
-    console.log(`Borrow: ${all}`)
+    const result = await db.getAllAsync('SELECT * FROM BorrowTB;')
+    setAll(result)
+    console.log(`Borrow: ${result}`)
   }
 
   useEffect( () => {
@@ -35,8 +37,6 @@ function Borrow() {
   const toGive = all.filter((br) => br.toGive);
   const toGet  = all.filter((br) => !br.toGive);
 
-  const [toggle, setToggle] = useState("All");
-  const [display, setDisplay] = useState(all);
 
   function showList(value) {
     setToggle(value);
@@ -80,11 +80,11 @@ function Borrow() {
       </View>
       <ScrollView>
         <View style={styles.cards}></View>
-        <View>
           {display.map(br => (
+        <View key={br.ID}>
             <Card key={br.ID} name={br.Name} price={br.Amount} borrow={br.toGive} reason={br.Reason} />
-          ))}
         </View>
+          ))}
         <View style={styles.cards}></View>
       </ScrollView>
     </View>

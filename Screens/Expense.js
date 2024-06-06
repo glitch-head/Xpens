@@ -11,11 +11,9 @@ function Expense(){
     const [expenses,setExpenses] = useState([])
 
     async function getData(){
-        const result = await db.getAllAsync(
-            'SELECT * FROM ExpenseTB;'
-        )
+        const result = await db.getAllAsync('SELECT * FROM ExpenseTB;')
         setExpenses(result)
-        console.log(`Expense : ${expenses}`)
+        console.log(`Expense : ${result}`)
     }
     useEffect( () => {
         db.withTransactionAsync( async() => {

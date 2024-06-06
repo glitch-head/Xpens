@@ -21,11 +21,18 @@ const AddAmount = (props) => {
     const [change,setChange] = useState(0)
 
     const addData = async(id) => {
+        console.log('id : '+id)
+        console.log('Amount : '+value)
         db.withTransactionAsync( async() => {
-            await db.runAsync('INSERT DATA INTO WalletTB (ID, UPI , Amount) values (?,?,?);',
-            [id, upi, value]             
-        ) } )
+            await db.runAsync('INSERT INTO WalletTB(UPI,Amount) VALUES(?,?);',
+            [ upi, value])
+            // await db.runAsync('commit;')
+            const result = await db.getAllAsync('SELECT * FROM WalletTB')
+            console.log(result)
+            }
+        )
     }
+    
 
     const addValue = () => {
         console.log(`value inserted $${value}`)
