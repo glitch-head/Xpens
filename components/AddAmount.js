@@ -26,9 +26,6 @@ const AddAmount = (props) => {
         db.withTransactionAsync( async() => {
             await db.runAsync('INSERT INTO WalletTB(UPI,Amount) VALUES(?,?);',
             [ upi, value])
-            // await db.runAsync('commit;')
-            const result = await db.getAllAsync('SELECT * FROM WalletTB')
-            console.log(result)
             }
         )
     }

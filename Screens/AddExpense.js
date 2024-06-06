@@ -2,13 +2,44 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import Rbtn from '../components/Rbtn';
+import { SelectList } from 'react-native-dropdown-select-list'
 
-
+const Months = [
+    {key:'1', value:'JAN'}, {key:'2', value:'FEB'},
+    {key:'3', value:'MAR'}, {key:'4', value:'APR'},
+    {key:'5', value:'MAY'}, {key:'6', value:'JUN'},
+    {key:'7', value:'JUL'}, {key:'8', value:'AUG'},
+    {key:'9', value:'SEP'}, {key:'10',value:'OCT'},
+    {key:'11',value:'NOV'}, {key:'12',value:'DEC'},
+]
 
 const AddExpense = () => {
 
-    const pays = ['upi','cash']
+    const types = ['upi','cash']
     const [pay,setPay] = useState('')
+    const [month, setMonth] = useState("");
+    const [day,setDay] = useState()
+    const [year,setYear] = useState()
+    const [date,setDate] = useState('')
+    const [amount,setAmount] = useState()
+    const [exp,setExp] = useState()
+
+    const addData = () => {
+        const dt = `${day}-${month}-${year}`
+        setDate(dt)
+        console.log('------NEW DATA-----')
+        console.log(`expense: ${exp}`)
+        console.log(`payment: ${pay}`)
+        console.log('date: '+date)
+        console.log(`Amount: ${amount}`)
+        setDate()
+        setDay()
+        setMonth()
+        setYear()
+        setAmount()
+        setExp()
+    }
+
     return (
         <View style={styles.container} >
             <View style={styles.ReasonCard} >
@@ -16,12 +47,46 @@ const AddExpense = () => {
                 <TextInput 
                     multiline={true} 
                     style={styles.ReasonInputArea} placeholder=''
+                    onChangeText={setExp} value={exp}
+                />
+            </View>
+            
+           
+            <View style={styles.DateCard} >
+                    <Text style={styles.Text} > Date: </Text>
+                    <TextInput style={styles.day} placeholder='Day'
+                        value={day} onChangeText={setDay} inputMode='numeric'
+                    />
+                    <SelectList 
+                        placeholder='Month'
+                        setSelected={(val) => setMonth(val)}
+                        data={Months}
+                        save='value'
+                        inputStyles={{color:'#000'}}
+                        dropdownTextStyles={{color:'#fff'}}
+                        boxStyles={{width:85, backgroundColor: '#fff'}}
+                        disabledItemStyles={{display:'none'}}
+                        searchicon={<Text></Text>}
+                        searchPlaceholder=''
+                        closeicon={<Text></Text>}
+                    />
+                    <TextInput style={styles.year} placeholder='Year'
+                        value={year} onChangeText={(e)=>{setYear(e)
+                            console.log(year)
+                        }} inputMode='numeric'
+                    />
+            </View>
+            <View style={styles.AmountCard} >
+                <Text style={styles.Text} > Amount: </Text>
+                <TextInput style={styles.AmountInputArea} 
+                    value={amount} onChangeText={setAmount}
+                    inputMode='numeric'
                 />
             </View>
             <View style={styles.SelectCard}>
                 <Text style={styles.Text}>Payment: </Text>
-                {/* {
-                    pays.map(item => (
+                {
+                    types.map(item => (
                         <View key={item} style={styles.btnText}>
                             <Text style={styles.Text} >{item}</Text>
                             <TouchableOpacity
@@ -32,19 +97,10 @@ const AddExpense = () => {
                             </TouchableOpacity>
                         </View>
                     ))
-                } */}
-
-                <Rbtn items={pays} h={80} w={300} />
+                }
 
             </View>
-            <View style={styles.AmountCard} >
-                <Text style={styles.Text} > Amount: </Text>
-                <TextInput style={styles.AmountInputArea} />
-            </View>
-            <View style={styles.DateCard} >
-                    <Text style={styles.Text} > Date </Text>
-            </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={addData} >
                 <View style={styles.AddCard} >
                     <Text style={styles.AddText} >  Add </Text>
                 </View>
@@ -58,6 +114,24 @@ const AddExpense = () => {
 export default AddExpense;
 
 const styles = StyleSheet.create({
+    day : {
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        height: 45,
+        width: 60,
+        alignItems:'center',
+        justifyContent:'center',
+        padding: 10
+    },
+    year: {
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        height: 45,
+        width: 80,
+        alignItems:'center',
+        justifyContent:'center',
+        padding: 10
+    },
     container:{
         flex: 1,
         backgroundColor: '#403D39',
@@ -120,6 +194,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent: 'center',
         marginTop: 20,
+        gap: 20
     },
     InputArea:{
         backgroundColor: '#fff',
