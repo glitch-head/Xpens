@@ -7,36 +7,26 @@ import { useSQLiteContext } from "expo-sqlite/next";
 function Borrow() {
 
   const db = useSQLiteContext()
-  const [all,setAll] = useState([{ Name: "sreebi", Amount: 210,  toGive: false, Reason: 'Supply Registration'  }])
+  const [all,setAll] = useState([])
   const [toggle, setToggle] = useState("All");
   const [display, setDisplay] = useState(all);
+  const [change, setChange] = useState(0)
 
   async function getData() {
     const result = await db.getAllAsync('SELECT * FROM BorrowTB;')
     setAll(result)
-    console.log(`Borrow: ${result}`)
+    console.log(`Borrow:`)
   }
 
   useEffect( () => {
     db.withTransactionAsync(async() => {
       await getData()
     })
-  },[db] )
+    console.log('all updated')
+  },[db,change])
 
-  // const all = [
-  //   { name: "sreebi", money: 700,  toMe: true  },
-  //   { name: "muhsin", money: 2500, toMe: false },
-  //   { name: "jasim",  money: 1000, toMe: false },
-  //   { name: "abhi",   money: 200,  toMe: true  },
-  //   { name: "sreebi", money: 700,  toMe: true  },
-  //   { name: "muhsin", money: 2500, toMe: false },
-  //   { name: "jasim",  money: 1000, toMe: false },
-  //   { name: "abhi",   money: 200,  toMe: true  },
-  // ];
-
-  const toGive = all.filter((br) => br.toGive);
-  const toGet  = all.filter((br) => !br.toGive);
-
+  const toGive = all.filter((br) => !br.toGive);
+  const toGet  = all.filter((br) => br.toGive);
 
   function showList(value) {
     setToggle(value);
@@ -48,7 +38,7 @@ function Borrow() {
   let totalGive = 0;
   let totalGet = 0;
   all.forEach((element) => {
-    if (element.toGive) {
+    if (!element.toGive) {
       totalGive += element.Amount;
     } else {
       totalGet += element.Amount;
