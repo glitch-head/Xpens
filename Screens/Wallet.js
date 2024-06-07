@@ -27,9 +27,9 @@ function Wallet() {
     // console.log(brw[0]["SUM(Amount)"]);
     // console.log(tot);
     setWalletTb(result);
-    setBorrow(brw[0]["SUM(Amount)"]);
-    setExpns(exps[0]["SUM(Amount)"]);
-    setSavings(tot[0]["SUM(Amount)"] - exps[0]["SUM(Amount)"]);
+    setBorrow(+brw[0]["SUM(Amount)"]);
+    setExpns(+exps[0]["SUM(Amount)"]);
+    setSavings(+tot[0]["SUM(Amount)"] - +exps[0]["SUM(Amount)"]);
   }
 
   let upi = 0,

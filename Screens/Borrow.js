@@ -24,6 +24,9 @@ function Borrow() {
 
   async function delData(id) {
     db.withTransactionAsync(async()=>{
+      
+      
+
       await db.runAsync(`DELETE FROM BorrowTB WHERE ID = ${id}`)
       setChange(!change)
     })
@@ -41,7 +44,7 @@ function Borrow() {
     db.withTransactionAsync(async() => {
       await getData()
     })
-    showList('All')
+    // showList('All')
   },[db,change])
 
   const toGive = all.filter((br) => br.ToGive);

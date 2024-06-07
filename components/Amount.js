@@ -49,7 +49,7 @@ const Amount = (props) => {
                 {" "}
                 Total Amount:{" "}
             </Text>
-            <Text style={{ color: "#ffffff", fontSize: 45 }}> {showAmount} </Text>
+            <Text style={{ color: "#ffffff", fontSize: 45 }}>${showAmount} </Text>
             </View>
         </View>
         </View>
