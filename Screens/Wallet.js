@@ -12,11 +12,22 @@ function Wallet() {
   const navigation = useNavigation();
   const db = useSQLiteContext();
   const [walletTb,setWalletTb] = useState([]);
+  const [borrow,setBorrow] = useState()
+  const [expns,setExpns] = useState()
+  const [savings,setSavings] = useState()
 
   async function getData(){
     const result = await db.getAllAsync('SELECT * FROM WalletTB')
+    const brw = await db.getAllAsync('SELECT SUM(Amount) FROM BorrowTB WHERE ToGive = 1')
+    const exps = await db.getAllAsync('SELECT SUM(Amount) FROM ExpenseTB')
+    const tot = await db.getAllAsync('SELECT SUM(Amount) FROM WalletTB')
     // console.log(result)
+    console.log(brw[0]['SUM(Amount)'])
+    console.log(tot)
     setWalletTb(result)
+    setBorrow(brw[0]['SUM(Amount)'])
+    setExpns(exps[0]['SUM(Amount)'])
+    setSavings(tot[0]['SUM(Amount)'] - exps[0]['SUM(Amount)'])
   }
 
   let upi = 0,cash = 0;
@@ -56,7 +67,7 @@ function Wallet() {
           <TouchableOpacity onPress={() => navigation.navigate("Borrow")}>
             <View style={styles.textWrap}>
               <Text style={styles.titleText}>Borrow: </Text>
-              <Text>${amount}</Text>
+              <Text>${borrow}</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -73,7 +84,7 @@ function Wallet() {
           <TouchableOpacity onPress={() => navigation.navigate("Expense")}>
             <View style={styles.textWrap}>
               <Text style={styles.titleText}>Expense: </Text>
-              <Text>${amount}</Text>
+              <Text>${expns}</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -90,7 +101,7 @@ function Wallet() {
           <TouchableOpacity onPress={() => navigation.navigate("Add Savings")}>
             <View style={styles.textWrap}>
               <Text style={styles.titleText}>Savings: </Text>
-              <Text>${amount}</Text>
+              <Text>${savings}</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
