@@ -36,7 +36,7 @@ const BorrowAdd = () => {
             //     'SELECT * FROM BorrowTB'
             // )
 
-            console.log(result)
+            // console.log(result)
             setAmount()
             setName()
             setReason()
@@ -54,7 +54,7 @@ const BorrowAdd = () => {
             </View>
             <View style={styles.SelectCard} >
                 {
-                    ['Given','Borrow'].map(val => (
+                    ['you Gave','Borrowed'].map(val => (
                         <View key={val} style={styles.btnText} >
                             <Text style={styles.ToggleText} >{ val }</Text> 
                             <TouchableOpacity

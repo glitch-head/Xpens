@@ -15,8 +15,10 @@ function Borrow() {
 
   async function getData() {
     const result = await db.getAllAsync('SELECT * FROM BorrowTB;')
+    console.log(result)
     setAll(result) 
-    console.log(`Borrow:${result}`)
+    setDisplay(result)
+    // console.log(`Borrow:${result}`)
   }
 
   function showList(value) {
@@ -31,23 +33,20 @@ function Borrow() {
       await getData(showList)
     })
     showList('All')
-    setDisplay(all)
-    console.log('all updated')
   },[db])
 
-  const toGive = all.filter((br) => !br.toGive);
-  const toGet  = all.filter((br) => br.toGive);
+  const toGive = all.filter((br) => br.ToGive);
+  const toGet  = all.filter((br) => !br.ToGive);
 
   let totalGive = 0;
   let totalGet = 0;
   all.forEach((element) => {
-    if (!element.toGive) {
+    if (element.ToGive) {
       totalGive += element.Amount;
     } else {
       totalGet += element.Amount;
     }
   });
-
   return (
     <View style={styles.main}>
       <View style={styles.topbar}>
@@ -73,10 +72,11 @@ function Borrow() {
       </View>
       <ScrollView>
         <View style={styles.cards}></View>
-          {display.map(br => (
-        <View key={br.ID}>
-            <Card key={br.ID} name={br.Name} price={br.Amount} borrow={br.toGive} reason={br.Reason} />
-        </View>
+          {
+            display.map(br => (
+            <View key={br.ID}>
+                <Card key={br.ID} name={br.Name} price={br.Amount} borrow={br.toGive} reason={br.Reason} />
+            </View>
           ))}
         <View style={styles.cards}></View>
       </ScrollView>
