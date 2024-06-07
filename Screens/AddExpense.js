@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import Rbtn from '../components/Rbtn';
 import { SelectList } from 'react-native-dropdown-select-list'
 import { useSQLiteContext } from 'expo-sqlite';
 

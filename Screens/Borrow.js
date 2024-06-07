@@ -7,26 +7,17 @@ import { useSQLiteContext } from "expo-sqlite/next";
 function Borrow() {
 
   const db = useSQLiteContext()
+
   const [all,setAll] = useState([])
   const [toggle, setToggle] = useState("All");
   const [display, setDisplay] = useState(all);
-  const [change, setChange] = useState(0)
+  const [change, setChange] = useState()
 
   async function getData() {
     const result = await db.getAllAsync('SELECT * FROM BorrowTB;')
-    setAll(result)
-    console.log(`Borrow:`)
+    setAll(result) 
+    console.log(`Borrow:${result}`)
   }
-
-  useEffect( () => {
-    db.withTransactionAsync(async() => {
-      await getData()
-    })
-    console.log('all updated')
-  },[db,change])
-
-  const toGive = all.filter((br) => !br.toGive);
-  const toGet  = all.filter((br) => br.toGive);
 
   function showList(value) {
     setToggle(value);
@@ -34,6 +25,18 @@ function Borrow() {
     else if (value === "To Get") setDisplay(toGet);
     else setDisplay(all);
   }
+
+  useEffect( () => {
+    db.withTransactionAsync(async() => {
+      await getData(showList)
+    })
+    showList('All')
+    setDisplay(all)
+    console.log('all updated')
+  },[db])
+
+  const toGive = all.filter((br) => !br.toGive);
+  const toGet  = all.filter((br) => br.toGive);
 
   let totalGive = 0;
   let totalGet = 0;

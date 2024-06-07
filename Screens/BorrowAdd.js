@@ -1,21 +1,56 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import { useSQLiteContext } from 'expo-sqlite';
 
 const BorrowAdd = () => {
+    
+    const db = useSQLiteContext()
 
     const [value, setValue] = useState('')
+    const [name, setName] = useState('')
+    const [amount, setAmount] = useState()
+    const [reason, setReason] = useState('')
+
     function valHandle(val,value){
         setValue(val)
         console.log(val , value)
         console.log(val === value)
     }
 
+    const addData = async() => {
+
+        const toGive = value === 'Borrow'
+
+        console.log(`name : ${name}`)
+        console.log(`amount: ${amount}`)
+        console.log(`value: ${value} [${toGive}]`)
+        console.log(`reason: ${reason}`)
+
+        db.withTransactionAsync(async() => {
+            await db.runAsync(
+                'INSERT INTO BorrowTB (Name , Amount, toGive, Reason) VALUES(?,?,?,?);',
+                [name, amount, toGive, reason]
+            )
+            // const result = await db.getAllAsync(
+            //     'SELECT * FROM BorrowTB'
+            // )
+
+            console.log(result)
+            setAmount()
+            setName()
+            setReason()
+            setValue()
+        })
+    }
+
     return (
         <View style={styles.container} >
             <View style={styles.NameCard} >
                 <Text style={styles.Text} > Name </Text>
-                <TextInput style={styles.InputArea} placeholder='Name'/>
+                <TextInput style={styles.InputArea} placeholder='Name'
+                    value={name} onChangeText={setName}
+                />
             </View>
             <View style={styles.SelectCard} >
                 {
@@ -33,15 +68,17 @@ const BorrowAdd = () => {
             </View>
             <View style={styles.AmountCard} >
                 <Text style={styles.Text} > Amount: </Text>
-                <TextInput style={styles.AmountInputArea} />
+                <TextInput style={styles.AmountInputArea} value={amount} onChangeText={setAmount} />
             </View>
 
             <View style={styles.ReasonCard} >
                 <Text style={styles.Text} > Reason: </Text>
-                <TextInput multiline={true} style={styles.ReasonInputArea} placeholder=''/>
+                <TextInput multiline={true} style={styles.ReasonInputArea} placeholder=''
+                    value={reason} onChangeText={setReason}
+                />
             </View>
             
-            <TouchableOpacity>
+            <TouchableOpacity onPress={addData} >
                 <View style={styles.AddCard} >
                     <Text style={styles.AddText} >  Add </Text>
                 </View>
