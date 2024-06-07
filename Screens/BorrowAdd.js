@@ -11,31 +11,53 @@ const BorrowAdd = () => {
     const [name, setName] = useState('')
     const [amount, setAmount] = useState()
     const [reason, setReason] = useState('')
+    const [payment,setPayment] = useState()
 
-    function valHandle(val,value){
-        setValue(val)
-        console.log(val , value)
-        console.log(val === value)
-    }
+    // function valHandle(val){
+    //     setValue(val)
+    // }
 
     const addData = async() => {
 
-        const toGive = value === 'Borrow'
+        const toGive = value === 'Borrowed'
+        const upi = payment === 'upi'
 
         console.log(`name : ${name}`)
         console.log(`amount: ${amount}`)
         console.log(`value: ${value} [${toGive}]`)
         console.log(`reason: ${reason}`)
+        console.log(`payment: ${payment} [${upi}]`)
 
         db.withTransactionAsync(async() => {
             await db.runAsync(
-                'INSERT INTO BorrowTB (Name , Amount, toGive, Reason) VALUES(?,?,?,?);',
+                'INSERT INTO BorrowTB (Name , Amount, ToGive, Reason) VALUES(?,?,?,?);',
                 [name, amount, toGive, reason]
             )
+            
+            const sum = await db.getAllAsync(
+                'SELECT Amount FROM WalletTB WHERE UPI = ?',
+                [upi]
+            )
+            const upiSum = +sum[0]['Amount'] + +amount
+            const upiDif = +sum[0]['Amount'] - +amount
+            console.log(`upi sum : ${upiSum} ${typeof(upiSum)}`)
+            console.log(`upi dif : ${upiDif} ${typeof(upiDif)}`)
+            
+            if(toGive){
+                await db.runAsync(
+                    'UPDATE WalletTB SET Amount = ? WHERE UPI = ?',
+                    [upiSum , upi]
+                )
+            }else{
+                await db.runAsync(
+                    'UPDATE WalletTB SET Amount = ? WHERE UPI = ?',
+                    [upiDif , upi]
+                )
+            }
+
             // const result = await db.getAllAsync(
             //     'SELECT * FROM BorrowTB'
             // )
-
             // console.log(result)
             setAmount()
             setName()
@@ -54,12 +76,12 @@ const BorrowAdd = () => {
             </View>
             <View style={styles.SelectCard} >
                 {
-                    ['you Gave','Borrowed'].map(val => (
+                    ['I Gave','Borrowed'].map(val => (
                         <View key={val} style={styles.btnText} >
                             <Text style={styles.ToggleText} >{ val }</Text> 
                             <TouchableOpacity
                             style={styles.outter} 
-                            onPress={() => valHandle(val,value)} >
+                            onPress={() => setValue(val)} >
                                 {val === value && <View style={styles.inner} /> }
                             </TouchableOpacity>
                         </View>
@@ -67,8 +89,25 @@ const BorrowAdd = () => {
                 }
             </View>
             <View style={styles.AmountCard} >
-                <Text style={styles.Text} > Amount: </Text>
-                <TextInput style={styles.AmountInputArea} value={amount} onChangeText={setAmount} />
+                <View>
+                    <Text style={styles.Text} > Amount: </Text>
+                    <TextInput style={styles.AmountInputArea} value={amount} onChangeText={setAmount} inputMode='numeric' />
+                </View>
+                <View style={styles.paymentCard} >
+                {
+                    ['upi','cash'].map(val => (
+                        <View key={val} style={styles.btnText} >
+                            <Text style={styles.ToggleText} >{ val }</Text> 
+                            <TouchableOpacity
+                            style={styles.outter} 
+                            onPress={() => setPayment(val)} >
+                                {val === payment && <View style={styles.inner} /> }
+                            </TouchableOpacity>
+                        </View>
+                    ))
+                }
+            </View>
+               
             </View>
 
             <View style={styles.ReasonCard} >
@@ -102,8 +141,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         justifyContent: 'space-between',
-        // paddingBottom: 15,
-        // paddingTop: 10,
         paddingHorizontal: 20,
         marginTop: 20,
         gap: 5,
@@ -121,6 +158,16 @@ const styles = StyleSheet.create({
         padding: 20,
         paddingHorizontal: 35,
         marginTop: 20,
+    },
+    paymentCard:{
+        height: 60,
+        width: 225,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal:10,
+        marginLeft: 10
     },
     AmountCard:{
         height: 70,
@@ -173,7 +220,7 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     AmountInputArea:{
-        width: 240,
+        width: 80,
         height: 40,
         paddingHorizontal: 10,
         paddingVertical: 10,
@@ -214,6 +261,10 @@ const styles = StyleSheet.create({
     ToggleText:{
         color: '#ffff',
         fontSize: 20,
+    },
+    TogglePay:{
+        color: '#ffff',
+        fontSize: 12,
     },
 
 })

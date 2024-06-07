@@ -4,48 +4,54 @@ import { useNavigation } from "@react-navigation/native";
 import AddAmount from "../components/AddAmount";
 import Amount from "../components/Amount";
 import noteIcon from "../assets/sticky-notes.png";
-import addIcon from '../assets/add.png'
+import addIcon from "../assets/add.png";
+import refreshIcon from '../assets/refresh.png'
 import { useSQLiteContext } from "expo-sqlite/next";
-
 
 function Wallet() {
   const navigation = useNavigation();
   const db = useSQLiteContext();
-  const [walletTb,setWalletTb] = useState([]);
-  const [borrow,setBorrow] = useState()
-  const [expns,setExpns] = useState()
-  const [savings,setSavings] = useState()
 
-  async function getData(){
-    const result = await db.getAllAsync('SELECT * FROM WalletTB')
-    const brw = await db.getAllAsync('SELECT SUM(Amount) FROM BorrowTB WHERE ToGive = 1')
-    const exps = await db.getAllAsync('SELECT SUM(Amount) FROM ExpenseTB')
-    const tot = await db.getAllAsync('SELECT SUM(Amount) FROM WalletTB')
-    // console.log(result)
-    console.log(brw[0]['SUM(Amount)'])
-    console.log(tot)
-    setWalletTb(result)
-    setBorrow(brw[0]['SUM(Amount)'])
-    setExpns(exps[0]['SUM(Amount)'])
-    setSavings(tot[0]['SUM(Amount)'] - exps[0]['SUM(Amount)'])
+  const [walletTb, setWalletTb] = useState([]);
+  const [borrow, setBorrow] = useState();
+  const [expns, setExpns] = useState();
+  const [savings, setSavings] = useState();
+  const [refresh, setRefresh] = useState(false)
+
+  async function getData() {
+    const result  = await db.getAllAsync("SELECT * FROM WalletTB");
+    const brw     = await db.getAllAsync("SELECT SUM(Amount) FROM BorrowTB WHERE ToGive = 1");
+    const exps    = await db.getAllAsync("SELECT SUM(Amount) FROM ExpenseTB");
+    const tot     = await db.getAllAsync("SELECT SUM(Amount) FROM WalletTB");
+    console.log(result)
+    // console.log(brw[0]["SUM(Amount)"]);
+    // console.log(tot);
+    setWalletTb(result);
+    setBorrow(brw[0]["SUM(Amount)"]);
+    setExpns(exps[0]["SUM(Amount)"]);
+    setSavings(tot[0]["SUM(Amount)"] - exps[0]["SUM(Amount)"]);
   }
 
-  let upi = 0,cash = 0;
-  
-  for(let i=0 ; i<walletTb.length; i++){
-    if(walletTb[i].UPI) upi += walletTb[i].Amount;
-    else cash += walletTb[i].Amount
+  let upi = 0,
+      cash = 0;
+
+  for (let i = 0; i < walletTb.length; i++) {
+    if (walletTb[i].UPI) upi += walletTb[i].Amount;
+    else cash += walletTb[i].Amount;
   }
-  let amount = upi + cash;
 
   const [wallet, setWallet] = useState("Amount");
 
-  useEffect( () => {
-    db.withTransactionAsync( async() => {
-      await getData()
-    })
-  },[db, wallet])
-  console.log('updated')
+  useEffect(
+    () => {
+      db.withTransactionAsync(async () => {
+        await getData();
+        // await db.runAsync('DELETE TABLE WalletTB')
+      });
+    },
+    [db, wallet, refresh]
+  );
+  console.log("updated");
 
   const handleWallet = () => {
     setWallet(wallet === "Amount" ? "AddAmount" : "Amount");
@@ -55,11 +61,16 @@ function Wallet() {
     <View style={styles.container}>
       <View style={styles.walletCard}>
         {wallet === "Amount" ? <Amount upi={upi} cash={cash} /> : <AddAmount />}
-          <View style={styles.add}>
-        <TouchableOpacity onPress={handleWallet}>
-            <Image source={addIcon} style={{height:64, width:64}} />
-        </TouchableOpacity>
-          </View>
+        <View style={styles.add}>
+          <TouchableOpacity onPress={handleWallet}>
+            <Image source={addIcon} style={{ height: 64, width: 64 }} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setRefresh(!refresh)} style={{ 
+            display : wallet === 'Amount' ? 'flex' : 'none' 
+          }} >
+            <Image source={refreshIcon} style={{height:64, width:64}}/>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.features}>
@@ -67,7 +78,9 @@ function Wallet() {
           <TouchableOpacity onPress={() => navigation.navigate("Borrow")}>
             <View style={styles.textWrap}>
               <Text style={styles.titleText}>Borrow: </Text>
-              <Text>${borrow}</Text>
+              <Text>
+                ${borrow}
+              </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -84,7 +97,9 @@ function Wallet() {
           <TouchableOpacity onPress={() => navigation.navigate("Expense")}>
             <View style={styles.textWrap}>
               <Text style={styles.titleText}>Expense: </Text>
-              <Text>${expns}</Text>
+              <Text>
+                ${expns}
+              </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -98,10 +113,14 @@ function Wallet() {
           </TouchableOpacity>
         </View>
         <View style={styles.featCard}>
-          <TouchableOpacity onPress={() => navigation.navigate("Add Savings")}>
+          <TouchableOpacity 
+            onPress={() => navigation.navigate("Add Savings")}
+          >
             <View style={styles.textWrap}>
               <Text style={styles.titleText}>Savings: </Text>
-              <Text>${savings}</Text>
+              <Text>
+                ${savings}
+              </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -127,10 +146,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 25,
     flexDirection: "row",
-    // shadowColor: '#000',
-    // shadowRadius: 8,
-    // shadowOffset: {height: 8, width: 2},
-    // shadowOpacity: 0.15,
   },
   container: {
     alignItems: "center",
@@ -150,15 +165,16 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   add: {
-    height: 70,
+    height: 150,
     width: 70,
-    backgroundColor: "#FFFCF2",
+    // gap: 50,
+    // backgroundColor: "#FFFCF2",
+    // backgroundColor: '#00f112',
     borderRadius: 50,
     alignItems: "center",
-    justifyContent: "center",
-    marginTop: 25,
-    marginLeft: 20
-
+    justifyContent: 'space-between',
+    marginTop: 28,
+    marginLeft: 20,
   },
   bottomCard: {
     marginTop: 35,

@@ -3,6 +3,7 @@ import Card from "../components/Card";
 import { ScrollView } from "react-native-gesture-handler";
 import { useEffect, useState } from "react";
 import { useSQLiteContext } from "expo-sqlite/next";
+import IdCard from "../components/idCard";
 
 function Borrow() {
 
@@ -11,7 +12,7 @@ function Borrow() {
   const [all,setAll] = useState([])
   const [toggle, setToggle] = useState("All");
   const [display, setDisplay] = useState(all);
-  const [change, setChange] = useState()
+  const [change, setChange] = useState(true)
 
   async function getData() {
     const result = await db.getAllAsync('SELECT * FROM BorrowTB;')
@@ -19,6 +20,14 @@ function Borrow() {
     setAll(result) 
     setDisplay(result)
     // console.log(`Borrow:${result}`)
+  }
+
+  async function delData(id) {
+    db.withTransactionAsync(async()=>{
+      await db.runAsync(`DELETE FROM BorrowTB WHERE ID = ${id}`)
+      setChange(!change)
+    })
+    console.log('deleted')
   }
 
   function showList(value) {
@@ -30,10 +39,10 @@ function Borrow() {
 
   useEffect( () => {
     db.withTransactionAsync(async() => {
-      await getData(showList)
+      await getData()
     })
     showList('All')
-  },[db])
+  },[db,change])
 
   const toGive = all.filter((br) => br.ToGive);
   const toGet  = all.filter((br) => !br.ToGive);
@@ -74,8 +83,13 @@ function Borrow() {
         <View style={styles.cards}></View>
           {
             display.map(br => (
-            <View key={br.ID}>
-                <Card key={br.ID} name={br.Name} price={br.Amount} borrow={br.toGive} reason={br.Reason} />
+            <View key={br.ID} style={{flexDirection:'row'}} >
+                <Card key={br.ID} name={br.Name} price={br.Amount} borrow={br.ToGive} reason={br.Reason} />
+                <TouchableOpacity style={{alignItems:'center', justifyContent:'center'}} 
+                  onPress={() => delData(br.ID)}
+                >
+                  <IdCard key={br.ID}/>
+                </TouchableOpacity>
             </View>
           ))}
         <View style={styles.cards}></View>
@@ -90,7 +104,7 @@ const styles = StyleSheet.create({
   main: {
     backgroundColor: "#403D39",
     flex: 1,
-    alignItems: "center",
+    // alignItems: "center",
   },
   topbar: {
     backgroundColor: "#6f6e6d",

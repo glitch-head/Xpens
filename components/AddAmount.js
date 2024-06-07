@@ -20,16 +20,26 @@ const AddAmount = (props) => {
     const [value,setValue] = useState()
     const [change,setChange] = useState(0)
 
-    const addData = async(id) => {
-        console.log('id : '+id)
+    const addData = async() => {
+
         console.log('Amount : '+value)
+        // const sum = await db.getAllAsync('SELECT AMOUNT FROM WalletTB WHERE UPI = ?',[upi])
+        // console.log(`upiSum : ${sum[0]["Amount"]}`)
+
         db.withTransactionAsync( async() => {
-            await db.runAsync('INSERT INTO WalletTB(UPI,Amount) VALUES(?,?);',
-            [ upi, value])
+
+            const sum = await db.getAllAsync('SELECT AMOUNT FROM WalletTB WHERE UPI = ?',
+            [upi])
+            
+            const upiSum = +sum[0]['Amount'] + +value
+            // console.log(`upiSum : ${upiSum} ${+sum[0]['Amount']}`)
+            await db.runAsync('UPDATE WalletTB SET Amount = ? WHERE UPI = ?',
+            [ upiSum , upi ])
+
+            console.log('wallet updated')
             }
         )
     }
-    
 
     const addValue = () => {
         console.log(`value inserted $${value}`)
@@ -56,7 +66,7 @@ const AddAmount = (props) => {
                             <Text>Cash</Text>
                         </View>
                     </TouchableOpacity>
-                    
+                    <View style={styles.add} />
                 </View>
                 <View style={styles.bottomCard} >
                     <Text style={{color:'#ffffff',fontSize: 25 }}> Amount ({medium}):</Text>
