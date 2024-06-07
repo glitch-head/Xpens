@@ -161,11 +161,11 @@ const styles = StyleSheet.create({
     },
     paymentCard:{
         height: 60,
-        width: 225,
+        width: 200,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        gap: 35,
         paddingHorizontal:10,
         marginLeft: 10
     },
@@ -223,10 +223,12 @@ const styles = StyleSheet.create({
         width: 80,
         height: 40,
         paddingHorizontal: 10,
-        paddingVertical: 10,
+        // paddingVertical: 5,
         borderBottomWidth: 1,
         borderColor: '#fff',
-        color: '#fff'
+        color: '#fff',
+        marginLeft: 5,
+        marginBottom: 5
     },
     ReasonInputArea:{
         backgroundColor: '#fff',
