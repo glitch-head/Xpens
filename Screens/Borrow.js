@@ -24,10 +24,40 @@ function Borrow() {
 
   async function delData(id) {
     db.withTransactionAsync(async()=>{
-      
-      
+      const dataAmount = await db.getAllAsync(
+        `SELECT Amount,ToGive FROM BorrowTB WHERE ID = ${id}`
+      )  
 
-      await db.runAsync(`DELETE FROM BorrowTB WHERE ID = ${id}`)
+      console.log(dataAmount)
+      const delAmount = +dataAmount[0]['Amount']
+      const Diff = +dataAmount[0]['ToGive']
+
+      await db.runAsync(
+        `DELETE FROM BorrowTB WHERE ID = ${id}`
+      )
+      
+      if(Diff){
+        const walletAmount = await db.getAllAsync(
+          "SELECT * FROM WalletTB WHERE Amount = (SELECT MAX(Amount) FROM WalletTB);"      
+        )
+        const paymode = +walletAmount[0]['UPI']
+        const totAmount = +walletAmount[0]['Amount'] - delAmount
+        await db.runAsync(
+          'UPDATE WalletTB SET Amount = ? WHERE UPI = ?',
+          [totAmount,paymode]
+        )
+      }else{
+        const walletAmount = await db.getAllAsync(
+          "SELECT * FROM WalletTB WHERE Amount = (SELECT MIN(Amount) FROM WalletTB);"      
+        )
+        const paymode = +walletAmount[0]['UPI']
+        const totAmount = +walletAmount[0]['Amount'] + delAmount
+        await db.runAsync(
+          'UPDATE WalletTB SET Amount = ? WHERE UPI = ?',
+          [totAmount,paymode]
+        )
+      }
+
       setChange(!change)
     })
     console.log('deleted')
@@ -44,7 +74,7 @@ function Borrow() {
     db.withTransactionAsync(async() => {
       await getData()
     })
-    // showList('All')
+    showList('All')
   },[db,change])
 
   const toGive = all.filter((br) => br.ToGive);

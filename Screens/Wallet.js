@@ -9,6 +9,7 @@ import refreshIcon from '../assets/refresh.png'
 import { useSQLiteContext } from "expo-sqlite/next";
 
 function Wallet() {
+  
   const navigation = useNavigation();
   const db = useSQLiteContext();
 
@@ -23,6 +24,7 @@ function Wallet() {
     const brw     = await db.getAllAsync("SELECT SUM(Amount) FROM BorrowTB WHERE ToGive = 1");
     const exps    = await db.getAllAsync("SELECT SUM(Amount) FROM ExpenseTB");
     const tot     = await db.getAllAsync("SELECT SUM(Amount) FROM WalletTB");
+    
     console.log(result)
     // console.log(brw[0]["SUM(Amount)"]);
     // console.log(tot);
