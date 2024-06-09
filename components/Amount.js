@@ -60,53 +60,53 @@ export default Amount;
 
 
 const styles = StyleSheet.create({
-  walletCardleft: {
-    backgroundColor: "#000000",
-    width: 240,
-    height: 250,
-    borderRadius: 25,
-    padding: 25,
-  },
-  container: {
-    alignItems: "center",
-    flex: 1,
-    backgroundColor: "#403D39",
-  },
-  cardBtn: {
-    height: 70,
-    width: 100,
-    backgroundColor: "#FFFCF2",
-    borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  topCard: {
-    flexDirection: "row",
-    gap: 10,
-  },
-  add: {
-    height: 70,
-    width: 70,
-    backgroundColor: "#FFFCF2",
-    borderRadius: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    marginStart: 15,
-  },
-  bottomCard: {
-    marginTop: 35,
-    gap: 7,
-    marginLeft: 10,
-  },
-  AmountInputArea: {
-    width: 230,
-    height: 40,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderColor: "#fff",
-    color: "#fff",
-    marginLeft: 10,
-  },
+	walletCardleft: {
+		backgroundColor: "#000000",
+		width: 240,
+		height: 250,
+		borderRadius: 25,
+		padding: 25,
+	},
+	container: {
+		alignItems: "center",
+		flex: 1,
+		backgroundColor: "#403D39",
+	},
+	cardBtn: {
+		height: 70,
+		width: 100,
+		backgroundColor: "#FFFCF2",
+		borderRadius: 20,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	topCard: {
+		flexDirection: "row",
+		gap: 10,
+	},
+	add: {
+		height: 70,
+		width: 70,
+		backgroundColor: "#FFFCF2",
+		borderRadius: 50,
+		alignItems: "center",
+		justifyContent: "center",
+		marginStart: 15,
+	},
+	bottomCard: {
+		marginTop: 35,
+		gap: 7,
+		marginLeft: 10,
+	},
+	AmountInputArea: {
+		width: 230,
+		height: 40,
+		paddingHorizontal: 10,
+		paddingVertical: 10,
+		borderBottomWidth: 1,
+		borderColor: "#fff",
+		color: "#fff",
+		marginLeft: 10,
+	},
 });
 

@@ -13,10 +13,6 @@ const BorrowAdd = () => {
     const [reason, setReason] = useState('')
     const [payment,setPayment] = useState()
 
-    // function valHandle(val){
-    //     setValue(val)
-    // }
-
     const addData = async() => {
 
         const toGive = value === 'Borrowed'
@@ -55,10 +51,6 @@ const BorrowAdd = () => {
                 )
             }
 
-            // const result = await db.getAllAsync(
-            //     'SELECT * FROM BorrowTB'
-            // )
-            // console.log(result)
             setAmount()
             setName()
             setReason()
@@ -68,12 +60,14 @@ const BorrowAdd = () => {
 
     return (
         <View style={styles.container} >
+
             <View style={styles.NameCard} >
                 <Text style={styles.Text} > Name </Text>
                 <TextInput style={styles.InputArea} placeholder='Name'
-                    value={name} onChangeText={setName}
+                value={name} onChangeText={setName}
                 />
             </View>
+            
             <View style={styles.SelectCard} >
                 {
                     ['I Gave','Borrowed'].map(val => (
@@ -88,26 +82,29 @@ const BorrowAdd = () => {
                     ))
                 }
             </View>
+            
             <View style={styles.AmountCard} >
+
                 <View>
                     <Text style={styles.Text} > Amount: </Text>
                     <TextInput style={styles.AmountInputArea} value={amount} onChangeText={setAmount} inputMode='numeric' />
                 </View>
+                
                 <View style={styles.paymentCard} >
                 {
                     ['upi','cash'].map(val => (
                         <View key={val} style={styles.btnText} >
                             <Text style={styles.ToggleText} >{ val }</Text> 
                             <TouchableOpacity
-                            style={styles.outter} 
-                            onPress={() => setPayment(val)} >
+                                style={styles.outter} 
+                                onPress={() => setPayment(val)} 
+                            >
                                 {val === payment && <View style={styles.inner} /> }
                             </TouchableOpacity>
                         </View>
                     ))
                 }
-            </View>
-               
+                </View>               
             </View>
 
             <View style={styles.ReasonCard} >

@@ -4,8 +4,6 @@ import { TextInput } from 'react-native-gesture-handler';
 import { SelectList } from 'react-native-dropdown-select-list'
 import { useSQLiteContext } from 'expo-sqlite';
 
-
-
 const Months = [
     {key:'1', value:'JAN'}, {key:'2', value:'FEB'},
     {key:'3', value:'MAR'}, {key:'4', value:'APR'},
