@@ -26,7 +26,6 @@ function Borrow() {
 			`SELECT Amount,ToGive FROM BorrowTB WHERE ID = ${id}`
     	);
 
-		console.log(dataAmount);
 		const delAmount = +dataAmount[0]["Amount"];
 		const Diff = +dataAmount[0]["ToGive"];
 
