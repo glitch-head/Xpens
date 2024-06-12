@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { useSQLiteContext } from 'expo-sqlite';
 
@@ -220,7 +220,6 @@ const styles = StyleSheet.create({
         width: 80,
         height: 40,
         paddingHorizontal: 10,
-        // paddingVertical: 5,
         borderBottomWidth: 1,
         borderColor: '#fff',
         color: '#fff',
@@ -265,6 +264,5 @@ const styles = StyleSheet.create({
         color: '#ffff',
         fontSize: 12,
     },
-
 })
 

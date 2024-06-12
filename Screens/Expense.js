@@ -1,10 +1,7 @@
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import ExpenseCard from "../components/ExpenseCard";
 import { useSQLiteContext } from "expo-sqlite/next";
 import { useEffect, useState } from "react";
 import searchIcon from '../assets/glass.png'
-import { SelectList } from "react-native-dropdown-select-list";
 import MonthCard from "../components/monthCard";
 import { useNavigation } from "@react-navigation/native";
 
@@ -18,11 +15,9 @@ const Months =[
 function Expense(){
     const navigation = useNavigation()
     const db = useSQLiteContext()
-    const [monthExpense,setMonthExpense] = useState([])
     const [totExpense,setTotExpense] = useState(0)
     const [months,setMonths] = useState([])
     const [year,setYear] = useState()
-    const [years,setYears] = useState([])
 
     async function getData(year){
         let result
@@ -35,7 +30,6 @@ function Expense(){
                 `SELECT * FROM MonthlyExpense WHERE YEAR = ${year}`
             )
         }
-        setMonthExpense(result)
         setYear(result[0]['YEAR'])
         setTotExpense(result[0]['TOTAL'])
         setMonths(result[0])
@@ -79,7 +73,7 @@ function Expense(){
             <View style={styles.monthWrap}>{
                 Months.map(m => (
                     <TouchableOpacity key={m}  
-                    onPress={() => {navigation.navigate('Monthly Expense',{month: m})}} >
+                    onPress={() => {navigation.navigate('Monthly Expense',{month: m, year: year})}} >
                     <View key={m} style={styles.monthItem} >
                         <MonthCard month={m} spend={months[m]}/>
                     </View>

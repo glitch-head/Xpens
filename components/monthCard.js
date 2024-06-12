@@ -11,7 +11,6 @@ const MonthCard = (props) => {
     );
 }
 
-
 export default MonthCard;
 
 const styles = StyleSheet.create({

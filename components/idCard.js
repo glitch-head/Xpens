@@ -10,7 +10,6 @@ const IdCard = () => {
     );
 }
 
-
 export default IdCard;
 
 const styles = StyleSheet.create({

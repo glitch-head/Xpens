@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
 import ExpenseCard from '../components/ExpenseCard';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -7,7 +7,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 const MonthlyExpense = ({route}) => {
     // Table name - MonthlyExpense 
 
-    const {month} = route.params
+    const {month,year} = route.params
+
     const db = useSQLiteContext()
     const sample = [{'ID':0, 'Amount': 100, 'Cash':0, 'Date': '20-JAN-2021', 'Reason':'sample Data' }]
     const [data,setData] = useState(sample)
@@ -16,9 +17,8 @@ const MonthlyExpense = ({route}) => {
     const getData = async() => {
         await db.withTransactionAsync(async() => {
             const result = await db.getAllAsync(
-                `SELECT * FROM ExpenseTB WHERE Date LIKE "%-${month}-%"`,
+                `SELECT * FROM ExpenseTB WHERE Date LIKE "%-${month}-${year}%"`,
             )
-            // console.log(result)
             if(result.length == 0){
                 console.log('no expense this month')
                 setEmpty(true)
@@ -31,17 +31,16 @@ const MonthlyExpense = ({route}) => {
     },[db])
     
     return (
-        <View>
+        <View style={{backgroundColor: '#403D39',flex:1}} >
             {
             empty ? <View style={{alignItems: 'center', justifyContent:'center'}} >
-                    <Text style={{fontSize: 45}} >No Expenses this month</Text>
+                    <Text style={{fontSize: 45  }} >No Expenses this month</Text>
             </View>
             :
-            <ScrollView>
+            <ScrollView >
                 {
                 data.map(d => (
                     <View key={d.ID} >
-                        <Text>{month}</Text>
                         <ExpenseCard expense={d.Reason} money={d.Amount} date={d.Date} />
                     </View>
                 ))
@@ -51,7 +50,5 @@ const MonthlyExpense = ({route}) => {
         </View>
     )
 }
-
-const styles = StyleSheet.create({})
 
 export default MonthlyExpense

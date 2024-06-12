@@ -186,7 +186,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#403D39',
         alignItems: 'center',
-        // justifyContent: 'center'
     },
     ReasonCard:{
         height: 180,

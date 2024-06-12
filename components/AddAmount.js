@@ -6,7 +6,7 @@ import smartphone from '../assets/smartphone.png'
 import { useState } from 'react';
 import { useSQLiteContext } from 'expo-sqlite';
 
-const AddAmount = (props) => {
+const AddAmount = () => {
 
     const db = useSQLiteContext()
     const [medium, setMedium] = useState('upi')
@@ -23,16 +23,12 @@ const AddAmount = (props) => {
     const addData = async() => {
 
         console.log('Amount : '+value)
-        // const sum = await db.getAllAsync('SELECT AMOUNT FROM WalletTB WHERE UPI = ?',[upi])
-        // console.log(`upiSum : ${sum[0]["Amount"]}`)
 
         db.withTransactionAsync( async() => {
 
             const sum = await db.getAllAsync('SELECT AMOUNT FROM WalletTB WHERE UPI = ?',
             [upi])
-            
             const upiSum = +sum[0]['Amount'] + +value
-            // console.log(`upiSum : ${upiSum} ${+sum[0]['Amount']}`)
             await db.runAsync('UPDATE WalletTB SET Amount = ? WHERE UPI = ?',
             [ upiSum , upi ])
 
@@ -78,7 +74,6 @@ const AddAmount = (props) => {
                     </View>
                         </TouchableOpacity>
                     </View>
-                    {/* <Text style={{color:'#ffffff',fontSize: 45 }}> {props.showAmount} </Text> */}
                 </View>
             </View>
         </View>

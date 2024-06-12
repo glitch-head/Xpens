@@ -186,4 +186,5 @@ function Borrow() {
 		gap: 10,
 		marginVertical: 5
 	}
-	});
+	}
+);

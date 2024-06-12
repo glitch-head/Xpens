@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AddAmount from "../components/AddAmount";
 import Amount from "../components/Amount";
-import noteIcon from "../assets/sticky-notes.png";
 import addIcon from "../assets/add.png";
 import refreshIcon from '../assets/refresh.png'
 import { useSQLiteContext } from "expo-sqlite/next";
@@ -20,18 +19,19 @@ function Wallet() {
 	const [refresh, setRefresh] = useState(false)
 
 	async function getData() {
+
+		const date = new Date()
+		const yr = date.getFullYear()
 		const result  = await db.getAllAsync("SELECT * FROM WalletTB");
 		const brw     = await db.getAllAsync("SELECT SUM(Amount) FROM BorrowTB WHERE ToGive = 1");
-		const exps    = await db.getAllAsync("SELECT SUM(Amount) FROM ExpenseTB");
+		const exps    = await db.getAllAsync(`SELECT TOTAL FROM MonthlyExpense WHERE YEAR = ${yr}`);
 		const tot     = await db.getAllAsync("SELECT SUM(Amount) FROM WalletTB");
 		
 		console.log(result)
-		// console.log(brw[0]["SUM(Amount)"]);
-		// console.log(tot);
 		setWalletTb(result);
 		setBorrow(+brw[0]["SUM(Amount)"]);
-		setExpns(+exps[0]["SUM(Amount)"]);
-		setSavings(+tot[0]["SUM(Amount)"] - +exps[0]["SUM(Amount)"]);
+		setExpns(+exps[0]["TOTAL"]);
+		setSavings(+tot[0]["SUM(Amount)"] - +exps[0]["TOTAL"]);
 	}
 
 	let upi = 0,
@@ -48,7 +48,16 @@ function Wallet() {
 		() => {
 		db.withTransactionAsync(async () => {
 			await getData();
+			// await db.runAsync('DELETE TABLE MonthlyExpense')
 			// await db.runAsync('DELETE TABLE WalletTB')
+			// await db.runAsync('DELETE TABLE ExpenseTB')
+			// await db.runAsync(
+			// 	'INSERT INTO MonthlyExpense'+
+			// 	'(JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC,YEAR,TOTAL)'+
+			// 	'VALUES'+
+			// 	'(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+			// 	[0,0,0,0,0,0,0,0,0,0,0,0,2024,0]
+			// )
 		});
 		},
 		[db, wallet, refresh]
@@ -80,7 +89,7 @@ function Wallet() {
 			<TouchableOpacity onPress={() => navigation.navigate("Borrow")}>
 				<View style={styles.textWrap}>
 				<Text style={styles.titleText}>Borrow: </Text>
-				<Text>
+				<Text style={{fontSize: 25}} >
 					${borrow}
 				</Text>
 				</View>
@@ -91,7 +100,7 @@ function Wallet() {
 				}}
 			>
 				<View style={styles.featAdd}>
-				<Text>+</Text>
+				<Image source={addIcon} style={{height:48, width:48}} />
 				</View>
 			</TouchableOpacity>
 			</View>
@@ -99,7 +108,7 @@ function Wallet() {
 			<TouchableOpacity onPress={() => navigation.navigate("Expense")}>
 				<View style={styles.textWrap}>
 				<Text style={styles.titleText}>Expense: </Text>
-				<Text>
+				<Text style={{fontSize: 25}} >
 					${expns}
 				</Text>
 				</View>
@@ -110,29 +119,15 @@ function Wallet() {
 				}}
 			>
 				<View style={styles.featAdd}>
-				<Text>+</Text>
+				<Image source={addIcon} style={{height:48, width:48}} />
 				</View>
 			</TouchableOpacity>
 			</View>
 			<View style={styles.featCard}>
-			<TouchableOpacity 
-				onPress={() => navigation.navigate("Add Savings")}
-			>
-				<View style={styles.textWrap}>
-				<Text style={styles.titleText}>Savings: </Text>
-				<Text>
-					${savings}
-				</Text>
+				<View style={styles.savingsWrap}>
+					<Text style={styles.titleText}>Total Savings: </Text>
+					<Text style={{fontSize: 25}} >${savings}</Text>
 				</View>
-			</TouchableOpacity>
-			<TouchableOpacity
-				onPress={() => navigation.navigate("Notes")}
-				style={styles.noteBtn}
-			>
-				<View style={styles.notes}>
-				<Image source={noteIcon} style={{ height: 64, width: 64 }} />
-				</View>
-			</TouchableOpacity>
 			</View>
 		</View>
 		</View>
@@ -169,9 +164,6 @@ const styles = StyleSheet.create({
 	add: {
 		height: 150,
 		width: 70,
-		// gap: 50,
-		// backgroundColor: "#FFFCF2",
-		// backgroundColor: '#00f112',
 		borderRadius: 50,
 		alignItems: "center",
 		justifyContent: 'space-between',
@@ -208,18 +200,27 @@ const styles = StyleSheet.create({
 		marginStart: 15,
 	},
 	textWrap: {
-		// backgroundColor: '#0000f0',
 		height: 70,
-		width: 170,
+		width: 220,
 		padding: 10,
 		borderRadius: 10,
 		borderWidth: 1,
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	savingsWrap: {
+		height: 70,
+		width: 310,
+		padding: 10,
+		borderRadius: 10,
+		borderWidth: 1,
+		flexDirection:'row',
+		alignItems: 'center',
 	},
 	titleText: {
 		fontSize: 22,
 	},
 	noteBtn: {
-		// backgroundColor:'#0000f0',
 		borderWidth: 1,
 		width: 80,
 		height: 70,

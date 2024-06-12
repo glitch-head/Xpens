@@ -4,18 +4,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Borrow from './Screens/Borrow';
 import Expense from './Screens/Expense';
-import Notes from './Screens/Notes';
 import Wallet from './Screens/Wallet';
 import BorrowAdd from './Screens/BorrowAdd';
 import AddExpense from './Screens/AddExpense';
-import AddSavings from './Screens/AddSavings';
 import MonthlyExpense from './Screens/MonthlyExpense';
 import * as FileSystem from 'expo-file-system';
 import { Asset } from 'expo-asset';
 import { SQLiteProvider } from 'expo-sqlite/next';
 import { ActivityIndicator } from 'react-native';
-
-
 
 const Stack = createStackNavigator()
 
@@ -74,10 +70,8 @@ export default function App() {
          <Stack.Screen name='Expense' component={Expense}/>
          <Stack.Screen name='Wallet' component={Wallet}/>
          <Stack.Screen name='Monthly Expense' component={MonthlyExpense} />
-         <Stack.Screen name='Notes' component={Notes}/>
          <Stack.Screen name='BorrowAdd' component={BorrowAdd} />
          <Stack.Screen name='Add Expense' component={AddExpense} />
-         <Stack.Screen name='Add Savings' component={AddSavings} />
       </Stack.Navigator>
     </NavigationContainer>
       </SQLiteProvider>
