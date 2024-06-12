@@ -37,13 +37,56 @@ const AddExpense = () => {
                 'INSERT INTO ExpenseTB (Cash, Amount, Date, Reason) VALUES (?,?,?,?);',
                 [cash,amount,dt,exp]
             )
+            const result  = await db.getAllAsync(
+                'SELECT Amount FROM WalletTB WHERE UPI = ?',
+                [!cash]
+            )
+            console.log(result)
+            const total = +result[0]['Amount'] - +amount
+            console.log(`amount : ${total}`)
+            await db.runAsync(
+                'UPDATE WalletTB SET Amount = ? WHERE UPI = ?',
+                [total, !cash]
+            )
+            const row = await db.getAllAsync(
+                'SELECT TOTAL FROM MonthlyExpense WHERE YEAR = ?',
+                [year]
+            )
+            if(row.length == 0){
+                console.log(`no records available on year: ${year}`)
+                await db.runAsync(
+                    'INSERT INTO MonthlyExpense'+
+                    '(JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC,YEAR,TOTAL)'+
+                    'VALUES'+
+                    '(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                    [0,0,0,0,0,0,0,0,0,0,0,0,year,0]
+                )
+            }
+
+            const prev = await db.getAllAsync(
+                `SELECT TOTAL,${month} FROM MonthlyExpense WHERE YEAR = ${year}`,
+            )
+            console.log('previous values: ')
+            console.log(prev)
+            const prevAmount = +prev[0][month]
+            const prevTOTAL = +prev[0]['TOTAL']
+            console.log(`amount: ${prevAmount} TOTAL: ${prevTOTAL}`)
+
+            await db.runAsync(
+                `UPDATE MonthlyExpense SET ${month} = ${prevAmount+ +amount},`+
+                `TOTAL = ${prevTOTAL + +amount} WHERE YEAR=${year}`
+            )
+            const test = await db.getAllAsync(
+                'SELECT * FROM MonthlyExpense'
+            ) 
+            console.log(test)
         })
         setChange(!change)
     }
 
     useEffect(()=> {
         setDay()
-        setMonth()
+        // setMonth()
         setYear()
         setAmount()
         setExp()
