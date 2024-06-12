@@ -20,11 +20,16 @@ function Expense(){
     const [year,setYear] = useState()
 
     async function getData(year){
+
         let result
         if(!year){
-            result = await db.getAllAsync(
-                'SELECT * FROM MonthlyExpense WHERE YEAR = (SELECT MAX(YEAR) FROM MonthlyExpense)'
-            )
+            try{
+                result = await db.getAllAsync(
+                    'SELECT * FROM MonthlyExpense WHERE YEAR = (SELECT MAX(YEAR) FROM MonthlyExpense)'
+                )
+            }catch(error){
+                console.log('no data found : '+ error)
+            }
         }else{
             result = await db.getAllAsync(
                 `SELECT * FROM MonthlyExpense WHERE YEAR = ${year}`
@@ -33,12 +38,13 @@ function Expense(){
         setYear(result[0]['YEAR'])
         setTotExpense(result[0]['TOTAL'])
         setMonths(result[0])
-        console.log(result[0])
     }
 
     const getInput = () => {
         console.log(`year : ${year}`)
+
         db.withTransactionAsync(async()=>{
+
             getData(year) 
         })
     }
@@ -62,6 +68,8 @@ function Expense(){
                         value={year}
                         onChangeText={setYear}
                         inputMode="numeric"
+                        maxLength={4}
+                        
                     />
                     <TouchableOpacity onPress={getInput} >
                         <View style={styles.searchStyle}>

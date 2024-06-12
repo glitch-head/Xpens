@@ -12,9 +12,9 @@ function Wallet() {
 	const navigation = useNavigation();
 	const db = useSQLiteContext();
 
-	const [walletTb, setWalletTb] = useState([]);
-	const [borrow, setBorrow] = useState();
-	const [expns, setExpns] = useState();
+	const [walletTb,setWalletTb]= useState([]);
+	const [borrow,	setBorrow] 	= useState();
+	const [expns, 	setExpns] 	= useState();
 	const [savings, setSavings] = useState();
 	const [refresh, setRefresh] = useState(false)
 
@@ -26,7 +26,6 @@ function Wallet() {
 		const brw     = await db.getAllAsync("SELECT SUM(Amount) FROM BorrowTB WHERE ToGive = 1");
 		const exps    = await db.getAllAsync(`SELECT TOTAL FROM MonthlyExpense WHERE YEAR = ${yr}`);
 		const tot     = await db.getAllAsync("SELECT SUM(Amount) FROM WalletTB");
-		
 		console.log(result)
 		setWalletTb(result);
 		setBorrow(+brw[0]["SUM(Amount)"]);
@@ -48,9 +47,9 @@ function Wallet() {
 		() => {
 		db.withTransactionAsync(async () => {
 			await getData();
-			// await db.runAsync('DELETE TABLE MonthlyExpense')
-			// await db.runAsync('DELETE TABLE WalletTB')
-			// await db.runAsync('DELETE TABLE ExpenseTB')
+			// await db.runAsync('DELETE FROM MonthlyExpense')
+			// await db.runAsync('DELETE FROM WalletTB')
+			// await db.runAsync('DELETE FROM ExpenseTB')
 			// await db.runAsync(
 			// 	'INSERT INTO MonthlyExpense'+
 			// 	'(JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC,YEAR,TOTAL)'+
@@ -58,11 +57,13 @@ function Wallet() {
 			// 	'(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 			// 	[0,0,0,0,0,0,0,0,0,0,0,0,2024,0]
 			// )
+			// await db.runAsync(
+			// 	'insert into WalletTB (Amount,UPI) values (0,1)',
+			// )
 		});
 		},
 		[db, wallet, refresh]
 	);
-	console.log("updated");
 
 	const handleWallet = () => {
 		setWallet(wallet === "Amount" ? "AddAmount" : "Amount");

@@ -34,7 +34,7 @@ const MonthlyExpense = ({route}) => {
         <View style={{backgroundColor: '#403D39',flex:1}} >
             {
             empty ? <View style={{alignItems: 'center', justifyContent:'center'}} >
-                    <Text style={{fontSize: 45  }} >No Expenses this month</Text>
+                    <Text style={{fontSize: 45 , color:'#FFF' }} >No Expenses this month</Text>
             </View>
             :
             <ScrollView >

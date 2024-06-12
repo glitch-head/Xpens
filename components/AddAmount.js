@@ -31,15 +31,13 @@ const AddAmount = () => {
             const upiSum = +sum[0]['Amount'] + +value
             await db.runAsync('UPDATE WalletTB SET Amount = ? WHERE UPI = ?',
             [ upiSum , upi ])
-
-            console.log('wallet updated')
             }
         )
     }
 
     const addValue = () => {
-        console.log(`value inserted $${value}`)
         addData()
+        console.log(`value inserted $${value}`)
         setChange( change? 0 : 1 )
     }
     useEffect(()=>{
