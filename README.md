@@ -1,6 +1,6 @@
-Xpense is a Expense tracking app where you can add both the money in upi and also in-hand.
-Xpense is Developed using React Native (expo-cli)
-Xpense uses SQLite3 as backend database 
+Xpens is a Expense tracking app where you can add both the money in upi and also in-hand.
+Xpens is Developed using React Native (expo-cli)
+Xpens uses SQLite3 as backend database 
 track monthly and yearly expenses
 track borrowed money seperated as :
     > money you borrowed from someone 
