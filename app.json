@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Xpens",
-    "slug": "Xpens",
+    "slug": "xpense",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,13 +18,20 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.glitchhead.xpense"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-asset"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "438897c4-ba7a-4ec2-b66a-5389a38c9293"
+      }
+    },
+    "owner": "glitch-head"
   }
 }
